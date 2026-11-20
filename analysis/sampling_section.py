@@ -103,15 +103,43 @@ def fish_text(tissue):
     return txt
 
 
+DATE_NUMS = {  # hydroxyproline, nmol/g: early males (rats 9-14) / late males (rats 17-29) / females; late/early ratio
+    "Heart": ("52–102", "13–53", "16–23", "0.37"),
+    "Liver": ("32–39", "20–36", "12–17", "0.79"),
+    "Brain": ("13–27", "8–14", "6–9", "0.72"),
+}
+ALLOC = {
+    "Heart": "all heart 180 and 360 min samples were taken on the late days (4–6)",
+    "Liver": "all liver 180 and 360 min samples were taken on the late days (4–6)",
+    "Brain": "all brain control and 60 min samples were taken on the early days (2–3)",
+}
+
+
+def date_effect_note(tissue=None):
+    ts = [tissue] if tissue else ["Heart", "Liver", "Brain"]
+    nums = "; ".join(f"{t.lower()} {DATE_NUMS[t][0]} (early males), {DATE_NUMS[t][1]} (late males), "
+                     f"{DATE_NUMS[t][2]} (females), late/early {DATE_NUMS[t][3]}×" for t in ts)
+    alloc = "; ".join(ALLOC[t] for t in ts)
+    return ("<div class='note warn'><b>Sampling-date effect (hydroxyproline).</b> Within each ischemia-time group, male "
+            "rats sampled later had less hydroxyproline (p = 0.01–0.04), and the females, sampled last, continued the "
+            f"same gradient: {nums} nmol/g. This fits a decline with age (slowing growth and collagen turnover) over "
+            "the sampling period rather than a sex or ischemia effect. Time groups were not spread evenly over the "
+            f"sampling days ({alloc}), so part of the change in rat hydroxyproline with ischemia time is probably a "
+            "sampling-date effect. Other metabolites showed no consistent period effect after FDR correction "
+            "(a tendency to ~35% lower levels in later male hearts rests mainly on two animals).</div>")
+
+
 def species_section(tissue):
     return (f"<h3>Sampling times</h3><p>{SELECTION} {control_summary(tissue)}</p>"
-            f"{rat_table(tissue)}<p class='small'>{age_weight_text()}</p><p class='small'>{fish_text(tissue)}</p>")
+            f"{rat_table(tissue)}<p class='small'>{age_weight_text()}</p>{date_effect_note(tissue)}"
+            f"<p class='small'>{fish_text(tissue)}</p>")
 
 
 def sex_section():
     parts = [f"<h3>Sampling times</h3><p>{SELECTION}</p><p>{age_weight_text()}</p>",
              "<p>" + " ".join(control_summary(o) for o in ["Heart", "Liver", "Brain"]) +
-             " Female control hearts and livers were therefore removed later, not earlier, than male controls.</p>"]
+             " Female control hearts and livers were therefore removed later, not earlier, than male controls.</p>",
+             date_effect_note()]
     for o in ["Heart", "Liver", "Brain"]:
         parts.append(f"<h3>{o}</h3>{rat_table(o, groups=[0, 30])}")
     return "".join(parts)
