@@ -35,7 +35,7 @@ SPECIES = {
         "accumulate, whereas in rat ADP falls and AMP rises only slightly because the adenylates are degraded "
         "further to inosine and hypoxanthine. ATP and energy charge also differ significantly.",
         "<b>Note on rat brain controls.</b> The rat brain control samples already have a low energy charge (0.61 vs "
-        "0.97 in carp control) and high AMP, consistent with the ~45 s needed to remove the brain. Rat brain "
+        "0.97 in carp control) and high AMP, consistent with the brain being removed 45–65 s after circulatory arrest (35–60 s in females). Rat brain "
         "responses at 30 min are therefore measured against a partly ischemic baseline, and the true rat response is, "
         "if anything, underestimated.",
         "<b>Glycolytic fuel is preserved in carp.</b> Rat brain glucose 6-phosphate (~6-fold), F6P, FBP (~9-fold) and "
@@ -78,9 +78,10 @@ SEX = [
     "<b>Heart: differences are at control and involve purine breakdown products.</b> Male control hearts had higher "
     "AMP (~20-fold), inosine (~10-fold) and hypoxanthine (N.D. in females) and a lower energy charge (0.90 vs 0.98) "
     "than female control hearts. This drives a sex main effect for 17 metabolites and a sex × ischemia interaction "
-    "for 9 (inosine, hypoxanthine, adenosine, IMP, ribose phosphates) – the females simply start lower. Because the "
-    "difference disappears at 30 min and involves the fastest ischemia markers, a slightly slower freezing of some "
-    "male control hearts is a plausible alternative explanation to a true sex difference.",
+    "for 9 (inosine, hypoxanthine, adenosine, IMP, ribose phosphates) – the females simply start lower. The sampling records rule out "
+    "faster handling of the females: female control hearts were removed 15–22 s after circulatory arrest, male "
+    "control hearts 4–8 s. Female control hearts thus preserved their energy state better in the first seconds, which "
+    "may reflect sex or cohort differences (the females were sampled 6–10 weeks later and were probably older).",
     "<b>Brain and liver: very few sex differences</b> (3–4 metabolites with a sex main effect, e.g. hydroxyproline in "
     "both tissues, ribulose 5-phosphate and ADP-ribose in brain; no significant interactions).",
     "<b>But the overall profiles separate by sex.</b> In PCA, female and male rats are partly separated along "
@@ -96,7 +97,8 @@ SEX = [
 
 SEX_TISSUE = {
     "Heart": ["Both sexes lose ~3/4 of ATP and accumulate lactate ~15–30-fold within 30 min. Female control hearts "
-              "had a higher energy charge (0.98 vs 0.90) and much lower AMP and inosine than male controls; at 30 min "
+              "had a higher energy charge (0.98 vs 0.90) and much lower AMP and inosine than male controls, although they "
+              "were removed later after circulatory arrest (15–22 s vs 4–8 s); at 30 min "
               "no single metabolite differed, although the PCA still separates "
               "the sexes along PC2."],
     "Brain": ["Few individual metabolites differ between male and female rat brains, although in the PCA the "

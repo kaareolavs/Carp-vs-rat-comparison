@@ -11,6 +11,7 @@ from data import Tissue, FR_CORRECTION
 from stats import sex_comparison
 from pathways import MAPS
 from report_html import doc, esc, fmt_q, fc_cell, num, figure
+from sampling_section import sex_section
 import findings
 
 XL = ["Ctr", "30 min"]
@@ -170,12 +171,13 @@ def build():
 n = 3 per cell). Later time points (60–360 min) contain only male rats and are therefore not part of this report.</p>
 <p>Female rats gave heart and liver at one time point and brain at the other, because brain removal takes longer
 (~45 s) than heart or liver (~15 s): for FR2, FR4 and FR5 the brain was sampled first (control) and heart/liver represent
-30 min; for FR1, FR3 and FR6 the order was reversed. Male rat IDs differ between tissues (e.g. 13h, 11b, 12L), i.e.
-group membership is defined per tissue as in the HMT files.</p>
+30 min; for FR1, FR3 and FR6 the order was reversed. Male rats likewise contributed different organs to different time groups (e.g. rat 13: heart control, liver
+and brain 30 min); HMT sample IDs are rat number + organ letter (h, b, L).</p>
 <div class="note warn"><b>† Corrected labels for FR1 and FR2.</b> In all three tissues the metabolite profiles of FR1
 and FR2 were the reverse of their labels (the "control" sample was fully ischemic and the "30 min" sample had a normal
 control profile), consistent with the two animals' identities being exchanged. Used here: heart and liver – FR2 =
 control, FR1 = 30 min; brain – FR1 = control, FR2 = 30 min.</div>
+{sex_section()}
 <h3>Statistics</h3>
 <p>Concentrations were log2-transformed (energy charges kept linear); N.D. values were replaced by half the lowest
 detected value of the metabolite in that tissue for testing, and metabolites detected in fewer than three samples were not
@@ -189,9 +191,10 @@ sexes, marked <b>†</b>).</li></ul>
 parameters.</p>
 <div class="note"><b>Limitations.</b> With n = 3 per cell only large, consistent differences can reach significance, and
 a non-significant result does not show that the sexes are equal. Sex is confounded with anything else that differed
-between the male and female cohorts (e.g. age, body weight, handling or the paired tissue-sampling scheme used for
-females). Some male controls (e.g. heart 13h, 10h) show more AMP and inosine than female controls, which may reflect
-sampling speed rather than sex.</div>
+between the male and female cohorts (e.g. age at sampling, body weight, sampling season, room temperature).
+Male control hearts contain more AMP and inosine than female control hearts although, according to the sampling
+records, they were removed faster (4–8 s vs 15–22 s after circulatory arrest); sampling speed therefore does not
+explain this difference.</div>
 <h3>Figure conventions</h3><p><span class="swatch" style="background:{F.C1}"></span>male rats &nbsp;
 <span class="swatch" style="background:{F.C2}"></span>female rats; mean ± SD; hollow marker = at least one animal
 N.D. In pathway maps and panels: <b>*</b> sex main effect q &lt; 0.05, <b>†</b> sex × ischemia interaction q &lt; 0.05.</p>

@@ -10,6 +10,7 @@ from data import Tissue, TIMES, TIME_LABEL, SHARED_TIMES, FR_CORRECTION
 from stats import fish_vs_rat
 from pathways import MAPS
 from report_html import doc, esc, fmt_q, fc_cell, num, figure
+from sampling_section import species_section
 import findings
 
 XL = ["C", "30", "60", "180", "360", "18h"]
@@ -277,6 +278,7 @@ HMT workbook ({esc(x.hmt_id)}, sheet <i>Table4 Absolute Concentration</i>). Valu
 were treated as missing for means and figures; for statistics they were replaced by half of the lowest detected value
 of that metabolite in the {tissue_name.lower()} data set. Metabolites detected in fewer than three samples were not
 tested ({len(x.compounds) - len(comp)} metabolites).</p>
+{species_section(tissue_name)}
 <h3>Statistics</h3><p>All tests used log2-transformed concentrations (energy charges were analysed on their linear 0–1
 scale). Three complementary questions were asked for every metabolite:</p>
 <ol>
