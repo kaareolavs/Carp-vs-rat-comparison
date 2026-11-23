@@ -70,7 +70,7 @@ def rat_table(organ, groups=None):
             "<th>Weight (g)</th><th class='l'>Sampling date</th><th>Age<br>(weeks)</th><th class='l'>Group</th>"
             f"<th>{organ} removed<br>(s after arrest)</th><th class='l'>Note</th></tr></thead><tbody>"
             + "".join(rows) + "</tbody></table><p class='small'>Age from the common birth date, 15 January 2026. "
-            "* Sampling date not recorded; age estimated from the sampling-day order.</p>")
+            "</p>")
 
 
 def control_summary(organ):

@@ -107,10 +107,10 @@ F = {
                 comment="Heart and liver frozen 16 s after death; brain and kidney 11:07:45. Both kidneys to 30 min. "
                         "Planned as brain control, heart/liver 30 min – sampled in reverse; groups here follow the "
                         "actual order (confirmed by the metabolite data)."),
-    "FR3": dict(day=None, date=None, tkey=None, arrest="11:47:46", Heart="11:48:01", Liver="11:48:01",
+    "FR3": dict(day="18 June", date="2026-06-18", tkey="18 June", arrest="11:47:46", Heart="11:48:01", Liver="11:48:01",
                 **{"Kidney 1": "11:48:11"}, Brain="11:49:45",
                 comment="Heart and liver clamped 11:48:01. One kidney direct (11:48:11), one kidney to 30 min. "
-                        "Date not noted."),
+                        "Date (18 June) supplied later."),
     "FR4": dict(day="22 June", date="2026-06-22", tkey="22 June", arrest="11:38:59", Brain="11:39:45",
                 Heart="11:40:10", Liver="11:40:25", **{"Kidney 1": "11:41:00", "Kidney 2": "11:41:15"},
                 comment="Kidney 1 direct, kidney 2 to 30 min ischemia."),
