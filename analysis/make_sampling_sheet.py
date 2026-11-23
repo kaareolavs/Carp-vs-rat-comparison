@@ -20,7 +20,7 @@ ORGANS = ["Heart", "Liver", "Brain", "Kidney 1", "Kidney 2"]
 
 # ---------------------------------------------------------------- transcription
 # per rat: day, arrest clock, organ -> clock time "hh:mm:ss" or ("s", seconds) when only seconds were noted
-D1, D2, D3, D5 = "2026-04-07", "2026-04-08", "2026-04-09", "2026-05-07"
+D1, D2, D3, D4, D5, D6 = "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-05-07", "2026-05-20"
 TEMP = {
     "Day 1": "room 21.5", "Day 2": "room 20.5", "Day 3": "room 20.9 / buffer 19.8 (21.2 at 14:48)",
     "Day 4": "buffer/water 22.3–22.6", "Day 5": "room 21.0 / buffer 21.0", "Day 6": "room 22.0",
@@ -73,7 +73,7 @@ for n, a, org, c in [
     (20, "12:21:04", dict(Liver="12:21:20", **{"Kidney 1": ("s", 8), "Kidney 2": "12:22:52"}, Heart="12:21:46",
                           Brain="12:23:12"), ""),
 ]:
-    R[n] = dict(day="Day 4", date=None, tkey="Day 4", arrest=a, comment=c, **org)
+    R[n] = dict(day="Day 4", date=D4, tkey="Day 4", arrest=a, comment=c, **org)
 for n, a, org, c in [
     (21, "12:38:45", dict(Heart="12:38:52", Liver="12:39:07", **{"Kidney 1": "12:40:25"}, Brain="12:40:38"), ""),
     (22, "12:52:27", dict(Liver="12:52:33", Heart="12:52:45", **{"Kidney 1": "12:53:50"}, Brain="12:54:08"), ""),
@@ -93,7 +93,7 @@ for n, a, org, c in [
     (30, "14:14:17", dict(Liver="14:14:24", Heart="14:15:18", Brain="14:16:40"),
      "Heart ischemia 4 min too long (34 min)."),
 ]:
-    R[n] = dict(day="Day 6", date=None, tkey="Day 6", arrest=a, comment=c, **org)
+    R[n] = dict(day="Day 6", date=D6, tkey="Day 6", arrest=a, comment=c, **org)
 R[31] = dict(day=None, date=None, tkey=None, comment="No sampling times recorded.")
 
 F = {
@@ -266,7 +266,7 @@ notes = [
     "HMT sample = sample ID in the HMT metabolomics data (h = heart, L = liver, b = brain).",
     "All rats (males and females) were born on 15 January 2026; age at sampling is calculated from the date where "
     "it was recorded.",
-    "Days 4 and 6 dates and rat 31 times were not recorded in the source file. Rats 32–34 were used for the oedema "
+    "Day 4 = 10 April 2026 and day 6 = 20 May 2026 (dates supplied later; not in the source file). Rat 31 times were not recorded. Rats 32–34 were used for the oedema "
     "study and are not listed. " + EXTRA_MALE[32],
 ]
 for i, t in enumerate(notes):

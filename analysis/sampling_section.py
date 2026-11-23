@@ -92,11 +92,12 @@ def age_weight_text():
     rho, p = stats.spearmanr(m.num, m.weight)
     f = df[(df.organ == "Heart") & (df.sex == "F")]
     return (f"All rats, males and females, were born on 15 January 2026. Rats were numbered in sampling order. Males "
-            f"were sampled between 7 April and May 2026 (days 1–6), at 11.7–16+ weeks of age, and weighed "
+            f"were sampled on 7–10 April (days 1–4, rats 1–20), 7 May (day 5) and 20 May 2026 (day 6), at 11.7–17.9 "
+            f"weeks of age, and weighed "
             f"{int(m.weight.min())}–{int(m.weight.max())} g; weight increased with rat number (Spearman ρ = "
             f"{rho:.2f}, p = {p:.4f}) as the animals grew during the sampling period. Females were sampled on "
             f"18–22 June 2026 at 22.0–22.6 weeks of age and weighed {int(f.weight.min())}–{int(f.weight.max())} g, "
-            "i.e. they were 6–10 weeks older than the males at sampling. Sex and age are therefore fully "
+            "i.e. they were 4–11 weeks older than the males at sampling. Sex and age are therefore fully "
             "confounded in this data set.")
 
 
@@ -119,30 +120,31 @@ def fish_text(tissue):
     return txt
 
 
-DATE_NUMS = {  # hydroxyproline, nmol/g: early males (rats 9-14) / late males (rats 17-29) / females; late/early ratio
-    "Heart": ("52–102", "13–53", "16–23", "0.37"),
-    "Liver": ("32–39", "20–36", "12–17", "0.79"),
-    "Brain": ("13–27", "8–14", "6–9", "0.72"),
+DATE_NUMS = {  # hydroxyproline median nmol/g: April males (~12 wk) / May males (16-18 wk) / females (22 wk);
+    # change per week of age within ischemia groups (males), p
+    "Heart": ("63", "30", "17", "−17%", "0.015"),
+    "Liver": ("33", "24", "15", "−4%", "0.08"),
+    "Brain": ("14", "11", "7", "−8%", "0.046"),
 }
 ALLOC = {
-    "Heart": "all heart 180 and 360 min samples were taken on the late days (4–6)",
-    "Liver": "all liver 180 and 360 min samples were taken on the late days (4–6)",
-    "Brain": "all brain control and 60 min samples were taken on the early days (2–3)",
+    "Heart": "heart 30 and 180 min samples were all taken in May and 360 min samples all in April",
+    "Liver": "liver 180 min samples were all taken in May and 360 min samples all in April",
+    "Brain": "brain control and 60 min samples were all taken in April",
 }
 
 
 def date_effect_note(tissue=None):
     ts = [tissue] if tissue else ["Heart", "Liver", "Brain"]
-    nums = "; ".join(f"{t.lower()} {DATE_NUMS[t][0]} (early males), {DATE_NUMS[t][1]} (late males), "
-                     f"{DATE_NUMS[t][2]} (females), late/early {DATE_NUMS[t][3]}×" for t in ts)
+    nums = "; ".join(f"{t.lower()} {DATE_NUMS[t][0]} → {DATE_NUMS[t][1]} → {DATE_NUMS[t][2]} nmol/g "
+                     f"({DATE_NUMS[t][3]} per week of age in males, p = {DATE_NUMS[t][4]})" for t in ts)
     alloc = "; ".join(ALLOC[t] for t in ts)
-    return ("<div class='note warn'><b>Sampling-date effect (hydroxyproline).</b> Within each ischemia-time group, male "
-            "rats sampled later had less hydroxyproline (p = 0.01–0.04), and the females, sampled last, continued the "
-            f"same gradient: {nums} nmol/g. This fits a decline with age (slowing growth and collagen turnover) between "
-            "~12 and ~22 weeks of age rather than a sex or ischemia effect. Time groups were not spread evenly over the "
-            f"sampling days ({alloc}), so part of the change in rat hydroxyproline with ischemia time is probably a "
-            "sampling-date effect. Other metabolites showed no consistent period effect after FDR correction "
-            "(a tendency to ~35% lower levels in later male hearts rests mainly on two animals).</div>")
+    return ("<div class='note warn'><b>Sampling-date effect (hydroxyproline).</b> Within each ischemia-time group, older "
+            "male rats had less hydroxyproline, and the females, sampled last, continued the same gradient (median, "
+            f"April males ~12 weeks → May males 16–18 weeks → females 22 weeks): {nums}. This fits a decline with age (slowing growth and collagen turnover) between "
+            "~12 and ~22 weeks of age rather than a sex or ischemia effect. Time groups were not spread evenly over April "
+            f"and May ({alloc}), so part of the differences in rat hydroxyproline between ischemia-time groups "
+            "probably reflects age at sampling. No other metabolite showed a significant sampling-date effect after "
+            "FDR correction (a tendency to ~35% lower levels in May male hearts rests mainly on two animals).</div>")
 
 
 def species_section(tissue):
