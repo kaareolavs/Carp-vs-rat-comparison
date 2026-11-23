@@ -5,6 +5,20 @@ import openpyxl
 from sampling import load, ROOT
 from report_html import esc
 
+BIRTH = pd.Timestamp("2026-01-15")   # birth date of all rats (males and females)
+
+
+def age_label(date, day):
+    """Age at sampling in weeks; estimated range when the sampling date was not recorded."""
+    if pd.notna(date):
+        return f"{(date - BIRTH).days / 7:.1f}"
+    if isinstance(day, str) and day.startswith("Day 4"):
+        return "12–16*"
+    if isinstance(day, str) and day.startswith("Day 6"):
+        return "≥16*"
+    return "~22*"          # FR3: sampled 18 or 22 June
+
+
 GL = {0: "Control", 30: "30 min", 60: "60 min", 180: "180 min", 360: "360 min"}
 NOTES = {
     ("FR1", "Brain"): "brain taken first, within 1 min (exact time not recorded)",
@@ -49,13 +63,14 @@ def rat_table(organ, groups=None):
         if pd.notna(r.date) and day and "June" not in day:
             date += f" ({day})"
         rows.append(f"<tr><td class='l'>{esc(r.hmt)}</td><td class='l' style='white-space:nowrap'>{esc(r.rat)}</td><td>{r.sex}</td>"
-                    f"<td>{'–' if pd.isna(r.weight) else int(r.weight)}</td><td class='l' style='white-space:nowrap'>{esc(date)}</td>"
+                    f"<td>{'–' if pd.isna(r.weight) else int(r.weight)}</td><td class='l' style='white-space:nowrap'>{esc(date)}</td><td>{age_label(r.date, r.day)}</td>"
                     f"<td class='l'>{GL.get(r.group, r.group)}</td><td>{_fmt_s(r.seconds, r.rat, organ)}</td>"
                     f"<td class='l small'>{esc(NOTES.get((r.rat, organ), ''))}</td></tr>")
     return ("<table style='font-size:7pt'><thead><tr><th class='l'>HMT sample</th><th class='l'>Rat</th><th>Sex</th>"
-            "<th>Weight (g)</th><th class='l'>Sampling date</th><th class='l'>Group</th>"
+            "<th>Weight (g)</th><th class='l'>Sampling date</th><th>Age<br>(weeks)</th><th class='l'>Group</th>"
             f"<th>{organ} removed<br>(s after arrest)</th><th class='l'>Note</th></tr></thead><tbody>"
-            + "".join(rows) + "</tbody></table>")
+            + "".join(rows) + "</tbody></table><p class='small'>Age from the common birth date, 15 January 2026. "
+            "* Sampling date not recorded; age estimated from the sampling-day order.</p>")
 
 
 def control_summary(organ):
@@ -76,12 +91,13 @@ def age_weight_text():
     from scipy import stats
     rho, p = stats.spearmanr(m.num, m.weight)
     f = df[(df.organ == "Heart") & (df.sex == "F")]
-    return (f"Rats were numbered in sampling order. Males were sampled between 7 April and May 2026 (days 1–6) and "
-            f"weighed {int(m.weight.min())}–{int(m.weight.max())} g; weight increased with rat number (Spearman ρ = "
-            f"{rho:.2f}, p = {p:.4f}), consistent with animals of the same age at arrival growing during the sampling "
-            f"period. Females were sampled on 18–22 June 2026 and weighed {int(f.weight.min())}–{int(f.weight.max())} g. "
-            "If all rats arrived at the same age (to be confirmed), the females were roughly 6–10 weeks older than the "
-            "males at sampling.")
+    return (f"All rats, males and females, were born on 15 January 2026. Rats were numbered in sampling order. Males "
+            f"were sampled between 7 April and May 2026 (days 1–6), at 11.7–16+ weeks of age, and weighed "
+            f"{int(m.weight.min())}–{int(m.weight.max())} g; weight increased with rat number (Spearman ρ = "
+            f"{rho:.2f}, p = {p:.4f}) as the animals grew during the sampling period. Females were sampled on "
+            f"18–22 June 2026 at 22.0–22.6 weeks of age and weighed {int(f.weight.min())}–{int(f.weight.max())} g, "
+            "i.e. they were 6–10 weeks older than the males at sampling. Sex and age are therefore fully "
+            "confounded in this data set.")
 
 
 def fish_text(tissue):
@@ -122,8 +138,8 @@ def date_effect_note(tissue=None):
     alloc = "; ".join(ALLOC[t] for t in ts)
     return ("<div class='note warn'><b>Sampling-date effect (hydroxyproline).</b> Within each ischemia-time group, male "
             "rats sampled later had less hydroxyproline (p = 0.01–0.04), and the females, sampled last, continued the "
-            f"same gradient: {nums} nmol/g. This fits a decline with age (slowing growth and collagen turnover) over "
-            "the sampling period rather than a sex or ischemia effect. Time groups were not spread evenly over the "
+            f"same gradient: {nums} nmol/g. This fits a decline with age (slowing growth and collagen turnover) between "
+            "~12 and ~22 weeks of age rather than a sex or ischemia effect. Time groups were not spread evenly over the "
             f"sampling days ({alloc}), so part of the change in rat hydroxyproline with ischemia time is probably a "
             "sampling-date effect. Other metabolites showed no consistent period effect after FDR correction "
             "(a tendency to ~35% lower levels in later male hearts rests mainly on two animals).</div>")

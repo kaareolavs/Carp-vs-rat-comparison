@@ -173,7 +173,8 @@ out = openpyxl.Workbook()
 ws = out.active
 ws.title = "Sampling times"
 cols = [str(n) for n in range(1, 32)] + list(F)
-rows = ["Rat", "Sex", "Weight (g)", "Sampling day", "Date", "Room / buffer temp (°C)", "Circulatory arrest (clock)"]
+rows = ["Rat", "Sex", "Weight (g)", "Birth date", "Sampling day", "Date", "Age at sampling (weeks)",
+        "Room / buffer temp (°C)", "Circulatory arrest (clock)"]
 for o in ORGANS:
     rows += [f"{o} – ischemia group (min)", f"{o} – removed (clock)", f"{o} – seconds after arrest"]
     if o in ("Heart", "Liver", "Brain"):
@@ -203,7 +204,10 @@ for j, rid in enumerate(cols, 2):
     ws.cell(1, j).fill = hdr_fill
     ws.cell(rowidx["Sex"], j, "F" if female else "M")
     ws.cell(rowidx["Weight (g)"], j, wt if isinstance(wt, (int, float)) else ("not recorded" if wt in (None, "?") else wt))
+    c = ws.cell(rowidx["Birth date"], j, dt.date(2026, 1, 15)); c.number_format = "yyyy-mm-dd"
     ws.cell(rowidx["Sampling day"], j, rec.get("day"))
+    ws.cell(rowidx["Age at sampling (weeks)"], j,
+            f'=IF(ISNUMBER({L}{rowidx["Date"]}),ROUND(({L}{rowidx["Date"]}-{L}{rowidx["Birth date"]})/7,1),"")')
     if rec.get("date"):
         c = ws.cell(rowidx["Date"], j, dt.date.fromisoformat(rec["date"])); c.number_format = "yyyy-mm-dd"
     ws.cell(rowidx["Room / buffer temp (°C)"], j, TEMP.get(rec.get("tkey")))
@@ -260,6 +264,8 @@ notes = [
     "Ischemia group 0 = direct procurement (control). Groups from the 'Male rats' / 'Female rats' sheets; FR1 and FR2 "
     "follow the actual sampling order (the reverse of the plan), which the metabolite data confirm.",
     "HMT sample = sample ID in the HMT metabolomics data (h = heart, L = liver, b = brain).",
+    "All rats (males and females) were born on 15 January 2026; age at sampling is calculated from the date where "
+    "it was recorded.",
     "Days 4 and 6 dates and rat 31 times were not recorded in the source file. Rats 32–34 were used for the oedema "
     "study and are not listed. " + EXTRA_MALE[32],
 ]
