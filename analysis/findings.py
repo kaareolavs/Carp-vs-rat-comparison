@@ -6,7 +6,11 @@ SPECIES = {
         "<b>The crucian carp heart keeps its ATP for the first hour; the rat heart does not.</b> Carp ATP and "
         "adenylate energy charge were essentially unchanged at 30 and 60 min (energy charge 0.98 → 0.97 → 0.93), "
         "whereas rat ATP fell ~3-fold by 30 min and ~10-fold by 60 min (energy charge 0.89 → 0.56 → 0.31). ATP, "
-        "phosphocreatine and energy charge all have significant species × time interactions.",
+        "phosphocreatine and energy charge all have significant species × time interactions. This was despite the "
+        "carp heart continuing to beat in situ (aorta ligated) for at least 45 min, while the rat hearts stopped "
+        "beating on contact with the 20 °C buffer – so the carp heart kept its ATP at a higher energy demand, and the comparison if anything favours "
+        "the rat. Its high glycolytic flux (lactate ~33-fold at 30 min, against ~2–2.5-fold in carp liver and brain) "
+        "fits a working organ.",
         "<b>Both hearts switch to anaerobic glycolysis at similar magnitude.</b> Lactate rose ~17–60-fold "
         "(not significant in carp because control values varied 10-fold), succinate ~8–16-fold and glycerol "
         "3-phosphate ~7–15-fold in both species, so the carp's preserved energy status is not explained by a smaller "

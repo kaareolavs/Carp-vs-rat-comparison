@@ -263,7 +263,11 @@ were compared at the same tissue temperature (and thus a comparable temperature 
 at their very different body temperatures. To bring large organs such as the rat liver quickly to this temperature,
 organs were cut into 3–8 slices, in approximately the same way for every animal and in the separate swelling
 experiment. The crucian carp heart and liver stayed inside the dead fish at
-room temperature for the whole period (in-situ ischemia).</p>
+room temperature for the whole period (in-situ ischemia). After the brain was removed, the carp aorta was ligated to stop
+blood flow; as expected for this anoxia-tolerant species, the heart kept beating (in several fish for at least 45 min;
+not timed exactly). The carp heart therefore did contractile work, and used ATP for it, during the first part of the
+ischemia period, whereas the rat hearts stopped beating as soon as they were placed in the 20 °C buffer (some beat
+once or twice).</p>
 {sample_table}
 <div class="note"><b>Male rats only.</b> Female rats (FR1–FR6) were sampled only at control and 30 min and are
 excluded from this report so that all rat time points come from males of the same cohort (3 per group, 2 at 360 min).
