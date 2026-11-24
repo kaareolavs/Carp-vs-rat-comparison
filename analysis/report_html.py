@@ -48,6 +48,8 @@ thead { display: table-header-group; }
 .kpi .l { font-size: 7.4pt; color: var(--ink2); }
 ul.findings { padding-left: 13pt; margin: 4pt 0 8pt; }
 ul.findings li { margin-bottom: 4pt; }
+.summary { font-size: 8.8pt; line-height: 1.4; }
+.summary ul.findings li { margin-bottom: 3pt; }
 .small { font-size: 7.6pt; color: var(--ink2); }
 .two { columns: 2; column-gap: 14pt; }
 .two table { break-inside: auto; }

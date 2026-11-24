@@ -20,7 +20,7 @@ ORGANS = ["Heart", "Liver", "Brain", "Kidney 1", "Kidney 2"]
 
 # ---------------------------------------------------------------- transcription
 # per rat: day, arrest clock, organ -> clock time "hh:mm:ss" or ("s", seconds) when only seconds were noted
-D1, D2, D3, D5 = "2026-04-07", "2026-04-08", "2026-04-09", "2026-05-07"
+D1, D2, D3, D4, D5, D6 = "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-05-07", "2026-05-20"
 TEMP = {
     "Day 1": "room 21.5", "Day 2": "room 20.5", "Day 3": "room 20.9 / buffer 19.8 (21.2 at 14:48)",
     "Day 4": "buffer/water 22.3–22.6", "Day 5": "room 21.0 / buffer 21.0", "Day 6": "room 22.0",
@@ -73,7 +73,7 @@ for n, a, org, c in [
     (20, "12:21:04", dict(Liver="12:21:20", **{"Kidney 1": ("s", 8), "Kidney 2": "12:22:52"}, Heart="12:21:46",
                           Brain="12:23:12"), ""),
 ]:
-    R[n] = dict(day="Day 4", date=None, tkey="Day 4", arrest=a, comment=c, **org)
+    R[n] = dict(day="Day 4", date=D4, tkey="Day 4", arrest=a, comment=c, **org)
 for n, a, org, c in [
     (21, "12:38:45", dict(Heart="12:38:52", Liver="12:39:07", **{"Kidney 1": "12:40:25"}, Brain="12:40:38"), ""),
     (22, "12:52:27", dict(Liver="12:52:33", Heart="12:52:45", **{"Kidney 1": "12:53:50"}, Brain="12:54:08"), ""),
@@ -93,7 +93,7 @@ for n, a, org, c in [
     (30, "14:14:17", dict(Liver="14:14:24", Heart="14:15:18", Brain="14:16:40"),
      "Heart ischemia 4 min too long (34 min)."),
 ]:
-    R[n] = dict(day="Day 6", date=None, tkey="Day 6", arrest=a, comment=c, **org)
+    R[n] = dict(day="Day 6", date=D6, tkey="Day 6", arrest=a, comment=c, **org)
 R[31] = dict(day=None, date=None, tkey=None, comment="No sampling times recorded.")
 
 F = {
@@ -107,10 +107,10 @@ F = {
                 comment="Heart and liver frozen 16 s after death; brain and kidney 11:07:45. Both kidneys to 30 min. "
                         "Planned as brain control, heart/liver 30 min – sampled in reverse; groups here follow the "
                         "actual order (confirmed by the metabolite data)."),
-    "FR3": dict(day=None, date=None, tkey=None, arrest="11:47:46", Heart="11:48:01", Liver="11:48:01",
+    "FR3": dict(day="18 June", date="2026-06-18", tkey="18 June", arrest="11:47:46", Heart="11:48:01", Liver="11:48:01",
                 **{"Kidney 1": "11:48:11"}, Brain="11:49:45",
                 comment="Heart and liver clamped 11:48:01. One kidney direct (11:48:11), one kidney to 30 min. "
-                        "Date not noted."),
+                        "Date (18 June) supplied later."),
     "FR4": dict(day="22 June", date="2026-06-22", tkey="22 June", arrest="11:38:59", Brain="11:39:45",
                 Heart="11:40:10", Liver="11:40:25", **{"Kidney 1": "11:41:00", "Kidney 2": "11:41:15"},
                 comment="Kidney 1 direct, kidney 2 to 30 min ischemia."),
@@ -173,7 +173,8 @@ out = openpyxl.Workbook()
 ws = out.active
 ws.title = "Sampling times"
 cols = [str(n) for n in range(1, 32)] + list(F)
-rows = ["Rat", "Sex", "Weight (g)", "Sampling day", "Date", "Room / buffer temp (°C)", "Circulatory arrest (clock)"]
+rows = ["Rat", "Sex", "Weight (g)", "Birth date", "Sampling day", "Date", "Age at sampling (weeks)",
+        "Room / buffer temp (°C)", "Circulatory arrest (clock)"]
 for o in ORGANS:
     rows += [f"{o} – ischemia group (min)", f"{o} – removed (clock)", f"{o} – seconds after arrest"]
     if o in ("Heart", "Liver", "Brain"):
@@ -203,7 +204,10 @@ for j, rid in enumerate(cols, 2):
     ws.cell(1, j).fill = hdr_fill
     ws.cell(rowidx["Sex"], j, "F" if female else "M")
     ws.cell(rowidx["Weight (g)"], j, wt if isinstance(wt, (int, float)) else ("not recorded" if wt in (None, "?") else wt))
+    c = ws.cell(rowidx["Birth date"], j, dt.date(2026, 1, 15)); c.number_format = "yyyy-mm-dd"
     ws.cell(rowidx["Sampling day"], j, rec.get("day"))
+    ws.cell(rowidx["Age at sampling (weeks)"], j,
+            f'=IF(ISNUMBER({L}{rowidx["Date"]}),ROUND(({L}{rowidx["Date"]}-{L}{rowidx["Birth date"]})/7,1),"")')
     if rec.get("date"):
         c = ws.cell(rowidx["Date"], j, dt.date.fromisoformat(rec["date"])); c.number_format = "yyyy-mm-dd"
     ws.cell(rowidx["Room / buffer temp (°C)"], j, TEMP.get(rec.get("tkey")))
@@ -260,7 +264,9 @@ notes = [
     "Ischemia group 0 = direct procurement (control). Groups from the 'Male rats' / 'Female rats' sheets; FR1 and FR2 "
     "follow the actual sampling order (the reverse of the plan), which the metabolite data confirm.",
     "HMT sample = sample ID in the HMT metabolomics data (h = heart, L = liver, b = brain).",
-    "Days 4 and 6 dates and rat 31 times were not recorded in the source file. Rats 32–34 were used for the oedema "
+    "All rats (males and females) were born on 15 January 2026; age at sampling is calculated from the date where "
+    "it was recorded.",
+    "Day 4 = 10 April 2026 and day 6 = 20 May 2026 (dates supplied later; not in the source file). Rat 31 times were not recorded. Rats 32–34 were used for the oedema "
     "study and are not listed. " + EXTRA_MALE[32],
 ]
 for i, t in enumerate(notes):

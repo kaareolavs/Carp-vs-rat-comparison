@@ -28,6 +28,24 @@ FR_CORRECTION = {                 # sample -> corrected group
 }
 
 
+# ---------------------------------------------------------------- swelling (tissue weight) correction
+# Organs gain or lose weight while kept in buffer during ischemia. Fold change in organ weight was measured in a
+# separate experiment ('2026_may_Swelling of tissue.xlsx'; 3 rats, 3 crucian carp per time point, 18 h: 3 carp).
+# Values are mean weight(t)/weight(0); rat liver = mean of three liver pieces. Groups not listed: 1.00.
+# The crucian carp organ weighed was the BRAIN: it was the only carp organ removed into buffer. Carp heart and liver
+# stayed inside the fish during ischemia (in situ, no buffer) -> no correction (1.00).
+SWELLING = {
+    ("Rat", "Heart"): {"60min": 1.0021, "180min": 1.0067, "360min": 1.0230},
+    ("Rat", "Brain"): {"60min": 1.0257, "180min": 1.0710, "360min": 1.1526},
+    ("Rat", "Liver"): {"60min": 1.0319, "180min": 1.0570, "360min": 1.0941},
+    ("Fish", "Brain"): {"60min": 0.9891, "180min": 0.9565, "360min": 0.9278, "18hours": 1.2476},
+}
+# HMT stated that the swelling rates in their Table 1 were NOT used when calculating nmol/g, i.e. their values are
+# per post-buffer (swollen) tissue weight. If HMT later confirms the opposite, set this to True: their own factor
+# is then divided out before the measured factor is applied.
+HMT_APPLIED_SWELLING = False
+
+
 def species_of(sample):
     if sample.startswith("FR") or re.fullmatch(r"\d+[hbL]", sample):
         return "Rat"
@@ -43,7 +61,7 @@ def sex_of(sample):
 
 
 class Tissue:
-    def __init__(self, name, correct_fr=True):
+    def __init__(self, name, correct_fr=True, male_rats_only=False, swelling_correction=True):
         self.name = name
         fname, self.hmt_id = FILES[name]
         wb = openpyxl.load_workbook(ROOT / fname, read_only=True, data_only=True)
@@ -81,6 +99,26 @@ class Tissue:
         ws = list(wb["Table 1 Sample Information"].iter_rows(values_only=True))
         w = {r[0]: r[1] for r in ws[2:] if r[0] in self.samples.index}
         self.samples["weight_mg"] = pd.Series(w)
+        hmt_f = {r[0]: r[3] for r in ws[2:] if r[0] in self.samples.index}
+        self.samples["hmt_swelling"] = pd.Series(hmt_f).astype(float)
+        f = []
+        for smp, row in self.samples.iterrows():
+            v = SWELLING.get((row.species, name), {}).get(row.group, 1.0) if swelling_correction else 1.0
+            if swelling_correction and HMT_APPLIED_SWELLING:
+                v = v / row.hmt_swelling
+            f.append(v)
+        self.samples["swelling_factor"] = f
+        if swelling_correction:
+            # convert per post-buffer weight -> per original tissue weight: concentrations and totals x factor
+            scale = [r for r in self.data.index
+                     if not self.meta.loc[r, "is_param"] or str(r).startswith("Total")]
+            self.data.loc[scale] = self.data.loc[scale].mul(self.samples["swelling_factor"], axis=1)
+        if male_rats_only:   # drop female rats (FR*) – used by the fish-vs-rat reports
+            keep = [s for s in self.samples.index if not s.startswith("FR")]
+            self.samples = self.samples.loc[keep]
+            self.data = self.data[keep]
+            self.group = {k: v for k, v in self.group.items() if k in keep}
+            self.original_group = {k: v for k, v in self.original_group.items() if k in keep}
 
     @property
     def compounds(self):

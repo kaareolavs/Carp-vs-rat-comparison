@@ -29,7 +29,7 @@ def series_for(x):
 
 
 def build(tissue_name):
-    x = Tissue(tissue_name)
+    x = Tissue(tissue_name, male_rats_only=True)
     R = fish_vs_rat(x)
     keep = R["keep"]
     label = lambda k: x.meta.loc[k, "label"] if k in x.meta.index else k
@@ -194,11 +194,8 @@ def build(tissue_name):
             cells.append(f"<td>{len(cs) or '–'}</td><td class='l'>{', '.join(ids) or 'not sampled'}</td>")
         srows.append("<tr>" + "".join(cells) + "</tr>")
     sample_table = ('<table><thead><tr><th class="l">Ischemia time</th><th>n</th><th class="l">Crucian carp '
-                    '(F/M = sex)</th><th>n</th><th class="l">Rat (FR = female rat, others male)</th></tr></thead><tbody>'
+                    '(F/M = sex)</th><th>n</th><th class="l">Rat (male)</th></tr></thead><tbody>'
                     + "".join(srows) + "</tbody></table>")
-    corr = FR_CORRECTION[tissue_name]
-    corr_txt = "; ".join(f"<b>{s}</b>: HMT label {x.original_group[s].replace('Ctr', 'control')} → used as "
-                         f"{g.replace('Ctr', 'control')}" for s, g in corr.items())
 
     # ------------------------------------------------------------------ auto findings
     def aec(sp, t):
@@ -234,8 +231,8 @@ def build(tissue_name):
     <li>Appendix. Group means for all metabolites</li>
   </ol>
   <div class="meta">Source data: <i>{esc(x.hmt_id)}_{tissue_name}_MetabolomeAnalysisData.xlsx</i> (Human Metabolome
-  Technologies, CE-TOFMS absolute quantification). Report generated {today}. Group labels for female rats FR1 and FR2
-  corrected as described in section 2.</div>
+  Technologies, CE-TOFMS absolute quantification). Report generated {today}. Rats: males only; female rats (control and
+  30 min) are analysed in the separate male-vs-female report.</div>
 </section>""")
 
     kpi = (f'<div class="kpis"><div class="kpi"><div class="v">{len(comp)}</div><div class="l">metabolites tested '
@@ -245,7 +242,7 @@ def build(tissue_name):
            f'{int(counts.loc["30 min", "Rat_up"] + counts.loc["30 min", "Rat_dn"])} / '
            f'{int(counts.loc["30 min", "Fish_up"] + counts.loc["30 min", "Fish_dn"])}</div><div class="l">changed '
            f'after 30 min: rat / carp</div></div></div>')
-    body.append(f"""<section class="page"><h2>1. Summary</h2>{kpi}
+    body.append(f"""<section class="page summary"><h2>1. Summary</h2>{kpi}
 <h3>Key findings</h3><ul class="findings">{''.join(f'<li>{c}</li>' for c in curated)}</ul>
 <h3>Numbers behind the findings</h3><ul class="findings">{''.join(f'<li>{a}</li>' for a in auto)}</ul>
 <h3>Metabolites changed relative to each species' own control (q &lt; 0.05)</h3>
@@ -258,16 +255,24 @@ the carp control, but is not part of the between-species statistics.</p></sectio
 
     body.append(f"""<section class="page"><h2>2. Study design and samples</h2>
 <p>Crucian carp and rats were exposed to increasing ischemia times before the {tissue_name.lower()} was sampled and
-frozen. The same crucian carp individuals provided heart, brain and liver at one time point. Female rats (FR) gave heart
-and liver at one time point and brain at the other (control or 30 min), because the brain takes longer (~45 s) to
-remove than the heart and liver (~15 s): for FR2, FR4 and FR5 the brain was sampled first (control) and heart/liver
-represent 30 min ischemia; for FR1, FR3 and FR6 the order was reversed.</p>
+frozen. The same crucian carp individuals provided heart, brain and liver at one time point. Each rat contributed
+different organs to different time groups (e.g. rat 13: heart control, liver and brain 30 min).</p>
+<p><b>Ischemia protocol.</b> All rat organs and the crucian carp brain were removed from the animal and kept in buffer
+at room temperature (~20–23 °C) for the ischemia period. Ischemia was deliberately run at ~20 °C so that both species
+were compared at the same tissue temperature (and thus a comparable temperature effect on metabolic rate), rather than
+at their very different body temperatures. To bring large organs such as the rat liver quickly to this temperature,
+organs were cut into 3–8 slices, in approximately the same way for every animal and in the separate swelling
+experiment. The crucian carp heart and liver stayed inside the dead fish at
+room temperature for the whole period (in-situ ischemia). After the brain was removed, the carp aorta was ligated to stop
+blood flow; as expected for this anoxia-tolerant species, the heart kept beating (in several fish for at least 45 min;
+not timed exactly). The carp heart therefore did contractile work, and used ATP for it, during the first part of the
+ischemia period, whereas the rat hearts stopped beating as soon as they were placed in the 20 °C buffer (some beat
+once or twice).</p>
 {sample_table}
-<div class="note warn"><b>† Corrected group labels.</b> The metabolite profiles of FR1 and FR2 were swapped relative to
-their labels in all three tissues: the sample labelled as control showed the full ischemic signature (ATP depletion,
-lactate and succinate accumulation), and the sample labelled 30 min had a normal control profile. The pattern is
-consistent across tissues and matches the sampling scheme above with the two animals' identities exchanged. In this
-report: {corr_txt}. HMT's original group means and figures use the uncorrected labels.</div>
+<div class="note"><b>Male rats only.</b> Female rats (FR1–FR6) were sampled only at control and 30 min and are
+excluded from this report so that all rat time points come from males of the same cohort (3 per group, 2 at 360 min).
+They are analysed, together with the males, in the separate male-vs-female report, which found no sex difference in the
+ischemic response. Note that HMT's own group means and figures include the females.</div>
 <p class="small">Tissue weights used for extraction ranged {x.samples.weight_mg.min():.0f}–{x.samples.weight_mg.max():.0f} mg.
 Sample IDs are those used by HMT.</p></section>""")
 
@@ -295,12 +300,15 @@ fish-vs-rat comparison and is not affected by constant differences in absolute l
 metabolites and derived parameters; q &lt; 0.05 is called significant. PCA used autoscaled log2 values. In panel B of
 the PCA each species was first centred on its own control mean, so the plot shows response trajectories rather than
 species differences.</p>
-<div class="note"><b>Limitations.</b> Group sizes are small (2–3 crucian carp per time point; 6 rats at control and
-30 min, 2–3 at later times), so only large effects reach significance and q-values should be read as screening
+<div class="note"><b>Limitations.</b> Group sizes are small (2–3 crucian carp and 2–3 male rats per time point), so only large effects reach significance and q-values should be read as screening
 evidence. Where a metabolite is N.D. in one group, significance can partly reflect detection rather than a measured
 concentration difference (hollow markers in figures). Absolute levels can differ between species for reasons unrelated
 to ischemia (body temperature, tissue composition, diet), which is why the response-based comparison (3) is
-emphasised.</div>
+emphasised. For heart and liver, crucian carp tissue underwent in-situ ischemia (inside the fish) whereas rat tissue was
+kept in buffer, so these comparisons combine a species difference with a difference in ischemia mode; the brain was
+kept in buffer in both species. Cutting creates damaged surfaces that can take up buffer, so part of the measured
+swelling may come from the cutting itself; because cutting was done the same way throughout, this mainly affects
+comparisons between organs rather than between time points.</div>
 <h3>Figure conventions</h3>
 <p><span class="swatch" style="background:{F.C1}"></span>crucian carp &nbsp;
 <span class="swatch" style="background:{F.C2}"></span>rat. Time axis: C = control, 30–360 = minutes of ischemia,
