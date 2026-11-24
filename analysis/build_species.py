@@ -258,7 +258,8 @@ the carp control, but is not part of the between-species statistics.</p></sectio
 frozen. The same crucian carp individuals provided heart, brain and liver at one time point. Each rat contributed
 different organs to different time groups (e.g. rat 13: heart control, liver and brain 30 min).</p>
 <p><b>Ischemia protocol.</b> All rat organs and the crucian carp brain were removed from the animal and kept in buffer
-at room temperature (~20–23 °C) for the ischemia period. The crucian carp heart and liver stayed inside the dead fish at
+at room temperature (~20–23 °C) for the ischemia period; the organs were cut into 3–8 slices so that the tissue
+temperature dropped quickly. The crucian carp heart and liver stayed inside the dead fish at
 room temperature for the whole period (in-situ ischemia).</p>
 {sample_table}
 <div class="note"><b>Male rats only.</b> Female rats (FR1–FR6) were sampled only at control and 30 min and are
