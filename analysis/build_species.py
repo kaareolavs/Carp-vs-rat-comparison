@@ -258,8 +258,11 @@ the carp control, but is not part of the between-species statistics.</p></sectio
 frozen. The same crucian carp individuals provided heart, brain and liver at one time point. Each rat contributed
 different organs to different time groups (e.g. rat 13: heart control, liver and brain 30 min).</p>
 <p><b>Ischemia protocol.</b> All rat organs and the crucian carp brain were removed from the animal and kept in buffer
-at room temperature (~20–23 °C) for the ischemia period; the organs were cut into 3–8 slices so that the tissue
-temperature dropped quickly. The crucian carp heart and liver stayed inside the dead fish at
+at room temperature (~20–23 °C) for the ischemia period. Ischemia was deliberately run at ~20 °C so that both species
+were compared at the same tissue temperature (and thus a comparable temperature effect on metabolic rate), rather than
+at their very different body temperatures. To bring large organs such as the rat liver quickly to this temperature,
+organs were cut into 3–8 slices, in approximately the same way for every animal and in the separate swelling
+experiment. The crucian carp heart and liver stayed inside the dead fish at
 room temperature for the whole period (in-situ ischemia).</p>
 {sample_table}
 <div class="note"><b>Male rats only.</b> Female rats (FR1–FR6) were sampled only at control and 30 min and are
@@ -299,7 +302,9 @@ concentration difference (hollow markers in figures). Absolute levels can differ
 to ischemia (body temperature, tissue composition, diet), which is why the response-based comparison (3) is
 emphasised. For heart and liver, crucian carp tissue underwent in-situ ischemia (inside the fish) whereas rat tissue was
 kept in buffer, so these comparisons combine a species difference with a difference in ischemia mode; the brain was
-kept in buffer in both species.</div>
+kept in buffer in both species. Cutting creates damaged surfaces that can take up buffer, so part of the measured
+swelling may come from the cutting itself; because cutting was done the same way throughout, this mainly affects
+comparisons between organs rather than between time points.</div>
 <h3>Figure conventions</h3>
 <p><span class="swatch" style="background:{F.C1}"></span>crucian carp &nbsp;
 <span class="swatch" style="background:{F.C2}"></span>rat. Time axis: C = control, 30–360 = minutes of ischemia,
