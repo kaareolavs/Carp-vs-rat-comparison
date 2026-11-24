@@ -43,7 +43,7 @@ def sex_of(sample):
 
 
 class Tissue:
-    def __init__(self, name, correct_fr=True):
+    def __init__(self, name, correct_fr=True, male_rats_only=False):
         self.name = name
         fname, self.hmt_id = FILES[name]
         wb = openpyxl.load_workbook(ROOT / fname, read_only=True, data_only=True)
@@ -81,6 +81,12 @@ class Tissue:
         ws = list(wb["Table 1 Sample Information"].iter_rows(values_only=True))
         w = {r[0]: r[1] for r in ws[2:] if r[0] in self.samples.index}
         self.samples["weight_mg"] = pd.Series(w)
+        if male_rats_only:   # drop female rats (FR*) – used by the fish-vs-rat reports
+            keep = [s for s in self.samples.index if not s.startswith("FR")]
+            self.samples = self.samples.loc[keep]
+            self.data = self.data[keep]
+            self.group = {k: v for k, v in self.group.items() if k in keep}
+            self.original_group = {k: v for k, v in self.original_group.items() if k in keep}
 
     @property
     def compounds(self):

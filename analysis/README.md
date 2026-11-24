@@ -28,6 +28,11 @@ PDF printing uses Node + Playwright (`print_pdf.js`) with the Inter font.
 - `findings.py` – hand-written interpretation text shown in the summaries; update it if the data change.
 - `build_species.py`, `build_sex.py`, `report_html.py` – report layout.
 
+## Rats included
+
+The three fish-vs-rat reports use **male rats only** (`Tissue(name, male_rats_only=True)`); female rats (control and
+30 min) appear only in the male-vs-female report.
+
 ## Label correction
 
 Female rats FR1 and FR2 are swapped relative to the HMT labels in all three tissues

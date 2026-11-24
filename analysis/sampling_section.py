@@ -49,11 +49,13 @@ def _fmt_s(v, rat, organ):
     return f"{int(round(v))}"
 
 
-def rat_table(organ, groups=None):
+def rat_table(organ, groups=None, males_only=False):
     df = load()
     d = df[(df.organ == organ) & df.hmt.notna()].copy()
     if groups is not None:
         d = d[d.group.isin(groups)]
+    if males_only:
+        d = d[d.sex == "M"]
     d["gord"] = d.group.map(lambda g: list(GL).index(g) if g in GL else 99)
     d = d.sort_values(["gord", "sex", "num"])
     rows = []
@@ -73,11 +75,11 @@ def rat_table(organ, groups=None):
             "</p>")
 
 
-def control_summary(organ):
+def control_summary(organ, males_only=False):
     df = load()
     d = df[(df.organ == organ) & df.hmt.notna() & (df.group == 0)]
     parts = []
-    for sx, name in [("M", "males"), ("F", "females")]:
+    for sx, name in ([("M", "males")] if males_only else [("M", "males"), ("F", "females")]):
         s = d[d.sex == sx].seconds.dropna()
         extra = "; FR1 &lt;60 s, exact time not recorded" if organ == "Brain" and sx == "F" else ""
         if len(s):
@@ -133,8 +135,20 @@ ALLOC = {
 }
 
 
-def date_effect_note(tissue=None):
+def date_effect_note(tissue=None, males_only=False):
     ts = [tissue] if tissue else ["Heart", "Liver", "Brain"]
+    if males_only:
+        nums = "; ".join(f"{t.lower()} {DATE_NUMS[t][0]} → {DATE_NUMS[t][1]} nmol/g "
+                         f"({DATE_NUMS[t][3]} per week of age, p = {DATE_NUMS[t][4]})" for t in ts)
+        alloc = "; ".join(ALLOC[t] for t in ts)
+        return ("<div class='note warn'><b>Sampling-date effect (free hydroxyproline).</b> Within each ischemia-time "
+                "group, male rats sampled in May (16–18 weeks old) had less free hydroxyproline than those sampled in "
+                f"April (~12 weeks): median {nums}. This fits a decline with age (slowing growth and collagen turnover). "
+                "Free hydroxyproline reflects collagen turnover, not collagen content (total hydroxyproline after acid "
+                f"hydrolysis), which in the heart increases with age. Time groups were not spread evenly over April and "
+                f"May ({alloc}), so part of the differences in rat free hydroxyproline between ischemia-time groups "
+                "probably reflects age at sampling. No other metabolite showed a significant sampling-date effect after "
+                "FDR correction.</div>")
     nums = "; ".join(f"{t.lower()} {DATE_NUMS[t][0]} → {DATE_NUMS[t][1]} → {DATE_NUMS[t][2]} nmol/g "
                      f"({DATE_NUMS[t][3]} per week of age in males, p = {DATE_NUMS[t][4]})" for t in ts)
     alloc = "; ".join(ALLOC[t] for t in ts)
@@ -150,8 +164,13 @@ def date_effect_note(tissue=None):
 
 
 def species_section(tissue):
-    return (f"<h3>Sampling times</h3><p>{SELECTION} {control_summary(tissue)}</p>"
-            f"{rat_table(tissue)}<p class='small'>{age_weight_text()}</p>{date_effect_note(tissue)}"
+    df = load()
+    m = df[(df.organ == "Heart") & (df.sex == "M")].dropna(subset=["weight"])
+    age = (f"All rats were born on 15 January 2026. The male rats were numbered in sampling order and sampled on 7–10 "
+           f"April (rats 1–20, ~12 weeks old), 7 May and 20 May 2026 (rats 21–30, 16–18 weeks old); they weighed "
+           f"{int(m.weight.min())}–{int(m.weight.max())} g and weight increased with rat number.")
+    return (f"<h3>Sampling times</h3><p>{SELECTION} {control_summary(tissue, males_only=True)}</p>"
+            f"{rat_table(tissue, males_only=True)}<p class='small'>{age}</p>{date_effect_note(tissue, males_only=True)}"
             f"<p class='small'>{fish_text(tissue)}</p>")
 
 
