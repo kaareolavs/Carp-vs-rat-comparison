@@ -82,7 +82,7 @@ SEX = [
     "faster handling of the females: female control hearts were removed 15–22 s after circulatory arrest, male "
     "control hearts 4–8 s. Female control hearts thus preserved their energy state better in the first seconds, which "
     "may reflect sex or cohort differences (all rats were born on 15 January 2026, so the females were 4–11 weeks older: ~22 vs 12–18 weeks).",
-    "<b>Brain and liver: very few sex differences</b> (3–4 metabolites with a sex main effect, e.g. hydroxyproline in "
+    "<b>Brain and liver: very few sex differences</b> (3–4 metabolites with a sex main effect, e.g. free hydroxyproline in "
     "both tissues, ribulose 5-phosphate and ADP-ribose in brain; no significant interactions).",
     "<b>But the overall profiles separate by sex.</b> In PCA, female and male rats are partly separated along "
     "PC2 in all three tissues (clearest in heart and liver, and among brain controls), i.e. many small, consistent "

@@ -138,11 +138,13 @@ def date_effect_note(tissue=None):
     nums = "; ".join(f"{t.lower()} {DATE_NUMS[t][0]} → {DATE_NUMS[t][1]} → {DATE_NUMS[t][2]} nmol/g "
                      f"({DATE_NUMS[t][3]} per week of age in males, p = {DATE_NUMS[t][4]})" for t in ts)
     alloc = "; ".join(ALLOC[t] for t in ts)
-    return ("<div class='note warn'><b>Sampling-date effect (hydroxyproline).</b> Within each ischemia-time group, older "
-            "male rats had less hydroxyproline, and the females, sampled last, continued the same gradient (median, "
+    return ("<div class='note warn'><b>Sampling-date effect (free hydroxyproline).</b> Within each ischemia-time group, older "
+            "male rats had less free hydroxyproline, and the females, sampled last, continued the same gradient (median, "
             f"April males ~12 weeks → May males 16–18 weeks → females 22 weeks): {nums}. This fits a decline with age (slowing growth and collagen turnover) between "
-            "~12 and ~22 weeks of age rather than a sex or ischemia effect. Time groups were not spread evenly over April "
-            f"and May ({alloc}), so part of the differences in rat hydroxyproline between ischemia-time groups "
+            "~12 and ~22 weeks of age rather than a sex or ischemia effect. Free hydroxyproline, as measured here, reflects collagen turnover; "
+            "it is not a measure of collagen content (total hydroxyproline after acid hydrolysis), which in the heart "
+            "increases with age. Time groups were not spread evenly over April "
+            f"and May ({alloc}), so part of the differences in rat free hydroxyproline between ischemia-time groups "
             "probably reflects age at sampling. No other metabolite showed a significant sampling-date effect after "
             "FDR correction (a tendency to ~35% lower levels in May male hearts rests mainly on two animals).</div>")
 
