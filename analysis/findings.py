@@ -63,7 +63,7 @@ SPECIES = {
         "detection limit thereafter) but only ~3–8-fold in carp; malate and fumarate fell late in both species.",
         "<b>Carp liver maintains glycogen-linked and nucleotide pools.</b> UDP-glucose, GTP/GDP, ATP/ADP and "
         "6-phosphogluconate were maintained (sedoheptulose 7-phosphate even increased) in carp but fell in rat "
-        "(UDP-glucose ~75-fold, GTP ~35-fold by 360 min), consistent with continued glycogen-fuelled metabolism and "
+        "(UDP-glucose ~70-fold, GTP ~30-fold by 360 min), consistent with continued glycogen-fuelled metabolism and "
         "pentose-phosphate activity in carp liver.",
         "<b>Purine breakdown occurs in both.</b> Hypoxanthine, xanthine and uric acid increased strongly in both "
         "species (no significant interaction), from a much lower baseline in carp.",

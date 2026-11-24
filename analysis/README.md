@@ -28,6 +28,13 @@ PDF printing uses Node + Playwright (`print_pdf.js`) with the Inter font.
 - `findings.py` – hand-written interpretation text shown in the summaries; update it if the data change.
 - `build_species.py`, `build_sex.py`, `report_html.py` – report layout.
 
+## Swelling correction
+
+Organs change weight in buffer during ischemia. `data.SWELLING` holds the measured fold changes in organ weight
+('2026_may_Swelling of tissue.xlsx'); by default all concentrations and totals are multiplied by them to express
+values per gram of original tissue (`Tissue(name, swelling_correction=False)` gives HMT's values unchanged).
+`HMT_APPLIED_SWELLING` (default False, as HMT stated) controls whether HMT's own Table 1 factors are divided out first.
+
 ## Rats included
 
 The three fish-vs-rat reports use **male rats only** (`Tissue(name, male_rats_only=True)`); female rats (control and

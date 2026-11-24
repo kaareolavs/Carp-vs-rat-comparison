@@ -178,6 +178,8 @@ and FR2 were the reverse of their labels (the "control" sample was fully ischemi
 control profile), consistent with the two animals' identities being exchanged. Used here: heart and liver – FR2 =
 control, FR1 = 30 min; brain – FR1 = control, FR2 = 30 min.</div>
 {sex_section()}
+<p class="small">Tissue swelling during ischemia was corrected using separately measured organ-weight changes
+(see the fish-vs-rat reports); at control and 30 min no correction applies, so this report is unaffected.</p>
 <h3>Statistics</h3>
 <p>Concentrations were log2-transformed (energy charges kept linear); N.D. values were replaced by half the lowest
 detected value of the metabolite in that tissue for testing, and metabolites detected in fewer than three samples were not
