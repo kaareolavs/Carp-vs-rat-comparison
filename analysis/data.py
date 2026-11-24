@@ -32,7 +32,8 @@ FR_CORRECTION = {                 # sample -> corrected group
 # Organs gain or lose weight while kept in buffer during ischemia. Fold change in organ weight was measured in a
 # separate experiment ('2026_may_Swelling of tissue.xlsx'; 3 rats, 3 crucian carp per time point, 18 h: 3 carp).
 # Values are mean weight(t)/weight(0); rat liver = mean of three liver pieces. Groups not listed: 1.00.
-# The crucian carp organ weighed was the BRAIN (heart and liver not measured -> 1.00).
+# The crucian carp organ weighed was the BRAIN: it was the only carp organ removed into buffer. Carp heart and liver
+# stayed inside the fish during ischemia (in situ, no buffer) -> no correction (1.00).
 SWELLING = {
     ("Rat", "Heart"): {"60min": 1.0021, "180min": 1.0067, "360min": 1.0230},
     ("Rat", "Brain"): {"60min": 1.0257, "180min": 1.0710, "360min": 1.1526},

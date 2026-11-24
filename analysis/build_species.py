@@ -257,6 +257,9 @@ the carp control, but is not part of the between-species statistics.</p></sectio
 <p>Crucian carp and rats were exposed to increasing ischemia times before the {tissue_name.lower()} was sampled and
 frozen. The same crucian carp individuals provided heart, brain and liver at one time point. Each rat contributed
 different organs to different time groups (e.g. rat 13: heart control, liver and brain 30 min).</p>
+<p><b>Ischemia protocol.</b> All rat organs and the crucian carp brain were removed from the animal and kept in buffer
+at room temperature (~20–23 °C) for the ischemia period. The crucian carp heart and liver stayed inside the dead fish at
+room temperature for the whole period (in-situ ischemia).</p>
 {sample_table}
 <div class="note"><b>Male rats only.</b> Female rats (FR1–FR6) were sampled only at control and 30 min and are
 excluded from this report so that all rat time points come from males of the same cohort (3 per group, 2 at 360 min).
@@ -293,7 +296,9 @@ species differences.</p>
 evidence. Where a metabolite is N.D. in one group, significance can partly reflect detection rather than a measured
 concentration difference (hollow markers in figures). Absolute levels can differ between species for reasons unrelated
 to ischemia (body temperature, tissue composition, diet), which is why the response-based comparison (3) is
-emphasised.</div>
+emphasised. For heart and liver, crucian carp tissue underwent in-situ ischemia (inside the fish) whereas rat tissue was
+kept in buffer, so these comparisons combine a species difference with a difference in ischemia mode; the brain was
+kept in buffer in both species.</div>
 <h3>Figure conventions</h3>
 <p><span class="swatch" style="background:{F.C1}"></span>crucian carp &nbsp;
 <span class="swatch" style="background:{F.C2}"></span>rat. Time axis: C = control, 30–360 = minutes of ischemia,

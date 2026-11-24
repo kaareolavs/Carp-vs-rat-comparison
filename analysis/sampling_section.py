@@ -196,19 +196,21 @@ def swelling_note(tissue=None):
             f = SWELLING.get((sp, t))
             cells = "".join(f"<td>{f[c]:.3f}</td>" if f and c in f else
                             ("<td>–</td>" if (sp == "Rat" and c == "18hours") else
-                             "<td class='small'>1 (not measured)</td>" if not f else "<td>–</td>") for c in cols)
+                             "<td class='small'>1 (in situ)</td>" if not f else "<td>–</td>") for c in cols)
             rows.append(f"<tr><td class='l'>{t}</td><td class='l'>{name}</td>{cells}</tr>")
     table = (f"<table style='font-size:7pt'><thead><tr><th class='l'>Organ</th><th class='l'>Species</th>{head}</tr>"
              f"</thead><tbody>{''.join(rows)}</tbody></table>")
-    return ("<h3>Correction for tissue swelling</h3><p>Organs were kept in buffer during ischemia and change weight "
-            "over time (rat organs gain weight; the crucian carp brain first loses and then gains weight). The tissue "
+    return ("<h3>Correction for tissue swelling</h3><p>All rat organs and the crucian carp brain were removed and "
+            "kept in buffer during ischemia, and change weight over time (rat organs gain weight; the crucian carp "
+            "brain first loses and then gains weight). The crucian carp heart and liver stayed inside the fish "
+            "during ischemia (in situ, room temperature), were never in buffer and need no correction. The tissue "
             "weights given to HMT were weighed after the ischemia period, and according to HMT the swelling rates "
             "listed in their Table 1 were not used when calculating nmol/g (to be confirmed in writing). HMT's values "
             "are therefore per gram of post-ischemia tissue. Organ weights were measured in a separate experiment "
             "before and after 1, 3 and 6 h (3 rats; 3 crucian carp) and after 18 h (3 other crucian carp), and all concentrations and "
             "concentration totals in this report were multiplied by the measured fold change in weight to express "
             "them per gram of original tissue (ratios such as energy charge are unaffected). Control and 30 min "
-            "samples, and crucian carp heart and liver (not weighed), were not corrected. Factors applied:</p>"
+            "samples, and the in-situ crucian carp heart and liver, were not corrected. Factors applied:</p>"
             f"{table}<p class='small'>The factors submitted to HMT for crucian carp were entered for the heart "
             "instead of the brain, so HMT's Table 1 lists them for the carp heart; this report uses them for the "
             "brain. The corrections are at most ~25% (carp brain, 18 h) and ~15% (rat brain, 360 min), small "
